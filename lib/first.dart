@@ -104,4 +104,10 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
       ),
     );
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    MyConfig.player.dispose().then((value) {});
+  }
 }

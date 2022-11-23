@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -22,7 +23,7 @@ class _Songs_classState extends State<Songs_class> {
             itemCount: list.length,
             itemBuilder: (context, index) {
               return ListTile(
-                onTap: () {
+                onTap: () async {
                   m.play.value=true;
                   if(m.cur_ind.value==index)
                     {
@@ -34,6 +35,14 @@ class _Songs_classState extends State<Songs_class> {
                     {
                       m.cur_ind.value = index;
                     }
+                  if(MyConfig.player.state==PlayerState.playing)
+                  {
+                    await MyConfig.player.stop();
+                    await MyConfig.player.play(DeviceFileSource("${m.song_list[m.cur_ind.value].data}"));
+                  }
+                  else{
+                    await MyConfig.player.play(DeviceFileSource("${m.song_list[m.cur_ind.value].data}"));
+                  }
                 },
                 title: Text(list[index].title),
                 subtitle: Text("${list[index].artist!}"),
