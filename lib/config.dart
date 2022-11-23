@@ -1,7 +1,9 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 class MyConfig extends GetxController {
   static OnAudioQuery _audioQuery = OnAudioQuery();
+  static AudioPlayer player = AudioPlayer();
   RxInt cur_ind = 0.obs;
   RxBool play = false.obs;
   RxList<SongModel> song_list = RxList();

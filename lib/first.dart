@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -87,10 +88,17 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
       ),
       title: Obx(() => m.song_list.length>0
           ? Obx(() => Text("${m.song_list.value[m.cur_ind.value].title}"))
-          :Text("Hello")),
-        subtitle: Obx(() => Text("${m.song_list.value[m.cur_ind.value].artist}")),
+          :Text("")),
+        subtitle: Obx(() => m.song_list.length>0?
+                  Obx(() => Text("${m.song_list.value[m.cur_ind.value].artist}")):Text("")),
         trailing: Wrap(children: [
-          Obx(() => m.play.value?Icon(Icons.pause):Icon(Icons.play_arrow)),
+          Obx(() => m.play.value?IconButton(onPressed: () async {
+            await MyConfig.player.pause();
+            m.play.value=!m.play.value;
+          }, icon: Icon(Icons.pause)):IconButton(onPressed: () async {
+            await MyConfig.player.play(DeviceFileSource("${m.song_list.value[m.cur_ind.value].data}"));
+            m.play.value=!m.play.value;
+          }, icon: Icon(Icons.play_arrow))),
           Icon(Icons.playlist_add_check_rounded)
         ],),
       ),
