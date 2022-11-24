@@ -5,8 +5,11 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 class MyConfig extends GetxController
 {
+  PaletteGenerator? paletteGenerator;
+  static Color color=Colors.white;
   static OnAudioQuery _audioQuery = OnAudioQuery();
   static AudioPlayer player=AudioPlayer();
   RxInt cur_ind=0.obs;
@@ -20,6 +23,10 @@ class MyConfig extends GetxController
   Future<Widget> get_image(int pos) async {
    final metadata = await MetadataRetriever.fromFile(File(song_list[pos].data));
    Uint8List? albumArt = metadata.albumArt;
+   paletteGenerator = await PaletteGenerator.fromImageProvider(
+     albumArt!=null ? Image.memory(albumArt).image : Image.asset("assets/logo.png").image
+   );
+   color=paletteGenerator!.lightVibrantColor!.color;
    return albumArt!=null ? Image.memory(albumArt) : Icon(Icons.music_note_outlined) ;
   }
   get_song_pos()

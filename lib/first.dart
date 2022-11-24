@@ -141,6 +141,6 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    MyConfig.player.stop();
+    MyConfig.player.stop().then((value) {});
   }
 }
