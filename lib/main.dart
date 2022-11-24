@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 // Git Key
 ////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
 void main() {
-  runApp(GetMaterialApp(
+  runApp(GetMaterialApp(debugShowCheckedModeBanner: false,
     home: Home(),
   ));
 }
