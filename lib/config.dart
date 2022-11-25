@@ -14,7 +14,6 @@ class MyConfig extends GetxController
   static OnAudioQuery _audioQuery = OnAudioQuery();
   static AudioPlayer player=AudioPlayer();
   RxInt cur_ind=0.obs;
-  RxInt fav_ind=0.obs;
   RxBool fav=false.obs;
   RxList<SongModel> song_list = RxList();
   RxList<Widget> img_list = RxList();
