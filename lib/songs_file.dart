@@ -69,7 +69,8 @@ class _Songs_classState extends State<Songs_class> {
               )),
             ],
           );
-        } else {
+        }
+        else {
           return Center(
             child: CircularProgressIndicator(),
           );

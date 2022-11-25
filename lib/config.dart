@@ -14,9 +14,11 @@ class MyConfig extends GetxController
   static OnAudioQuery _audioQuery = OnAudioQuery();
   static AudioPlayer player=AudioPlayer();
   RxInt cur_ind=0.obs;
+  RxInt fav_ind=0.obs;
   RxBool fav=false.obs;
   RxList<SongModel> song_list = RxList();
   RxList<Widget> img_list = RxList();
+  RxList<FavoritesEntity> fav_list = RxList();
   RxBool isPlay=false.obs;
   RxDouble cur_duration=0.0.obs;
    get_songs() async {
@@ -31,6 +33,14 @@ class MyConfig extends GetxController
    );
    color=paletteGenerator!.lightVibrantColor!.color;
    return albumArt!=null ? Image.memory(albumArt) : Icon(Icons.music_note_outlined) ;
+  }
+  getfavourites() async {
+    fav_list.value = await OnAudioRoom().queryFavorites(
+        limit: 100, //Default: 50
+        reverse: true, //Default: false
+        sortType: RoomSortType.TITLE //Default: null
+    );
+    return fav_list;
   }
   get_song_pos()
   {

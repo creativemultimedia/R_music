@@ -1,20 +1,37 @@
 
 import 'package:flutter/material.dart';
-
-class Playlist_class extends StatefulWidget {
-  const Playlist_class({Key? key}) : super(key: key);
-
-  @override
-  State<Playlist_class> createState() => _Playlist_classState();
-}
-
-class _Playlist_classState extends State<Playlist_class> {
+import 'package:get/get.dart';
+import 'package:on_audio_room/on_audio_room.dart';
+import 'package:rmusic/config.dart';
+import 'fav_fullscreen.dart';
+class Playlist_class extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.favorite),
-      title: Text("My Favourite"),
-      subtitle: Text("0 songs"),
+    MyConfig m=Get.put(MyConfig());
+    return Column(
+      children: [
+        FutureBuilder(future:m.getfavourites() ,builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            List<FavoritesEntity> list = snapshot.data as List<FavoritesEntity>;
+            return ListTile(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return fav_fullscreen();
+                },));
+              },
+              leading: Icon(Icons.favorite),
+              title: Text("My Favourite",style: TextStyle(color: Colors.white)),
+              subtitle: Text("${list.length} songs",style: TextStyle(color: Colors.white)),
+            );
+          }
+          else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },),
+      ],
     );
   }
 }
+
