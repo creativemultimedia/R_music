@@ -11,10 +11,10 @@ class Playlist_class extends StatefulWidget {
 class _Playlist_classState extends State<Playlist_class> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.yellow,
+    return ListTile(
+      leading: Icon(Icons.favorite),
+      title: Text("My Favourite"),
+      subtitle: Text("0 songs"),
     );
   }
 }

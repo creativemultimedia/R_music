@@ -5,6 +5,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter/material.dart';
+import 'package:on_audio_room/on_audio_room.dart';
 import 'package:palette_generator/palette_generator.dart';
 class MyConfig extends GetxController
 {
@@ -13,6 +14,7 @@ class MyConfig extends GetxController
   static OnAudioQuery _audioQuery = OnAudioQuery();
   static AudioPlayer player=AudioPlayer();
   RxInt cur_ind=0.obs;
+  RxBool fav=false.obs;
   RxList<SongModel> song_list = RxList();
   RxList<Widget> img_list = RxList();
   RxBool isPlay=false.obs;
@@ -34,6 +36,12 @@ class MyConfig extends GetxController
   {
     player.onPositionChanged.listen((Duration  p) {
     cur_duration.value=p.inMilliseconds.toDouble();});
+  }
+  check_fav() async {
+    fav.value= await OnAudioRoom().checkIn(
+        RoomType.FAVORITES,
+        song_list.value[cur_ind.value].id
+    );
   }
   String printDuration(Duration duration) {
     String twoDigits(int n) {

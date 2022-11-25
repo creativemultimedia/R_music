@@ -104,7 +104,7 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
             )),
           ),
           ListTile(
-            onTap: () async {
+            onTap: () {
               m.isPlay.value=true;
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return FullScreen();

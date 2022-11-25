@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_room/on_audio_room.dart';
 import 'package:rmusic/first.dart';
 import 'package:permission_handler/permission_handler.dart';
 // Git Key
 ////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
-void main() {
+Future<void> main() async {
+  await OnAudioRoom().initRoom();
   runApp(GetMaterialApp(debugShowCheckedModeBanner: false,
     home: Home(),
   ));

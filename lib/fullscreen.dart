@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_room/details/extensions/entity_checker_extension.dart';
+import 'package:on_audio_room/on_audio_room.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:rmusic/config.dart';
 
@@ -10,6 +12,7 @@ class FullScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     MyConfig m=Get.put(MyConfig());
     m.get_song_pos();
+    m.check_fav();
     return Scaffold(appBar: AppBar(title: Text("Song | Lyrics")),
     body: Container(
       color: MyConfig.color,
@@ -31,7 +34,21 @@ class FullScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Icon(Icons.favorite_border),
+              Obx(() => m.fav.value?IconButton(onPressed: () async {
+                bool deleteFromResult=await OnAudioRoom().deleteFrom(
+                  RoomType.FAVORITES,
+                  m.song_list.value[m.cur_ind.value].id,
+                );
+                print(deleteFromResult);
+                m.check_fav();
+              }, icon: Icon(Icons.favorite)):
+              IconButton(onPressed: () async {
+                int? addToResult=await OnAudioRoom().addTo(
+                  RoomType.FAVORITES,
+                  m.song_list.value[m.cur_ind.value].getMap.toFavoritesEntity(),
+                );
+                m.check_fav();
+              }, icon: Icon(Icons.favorite_border))),
               Icon(Icons.favorite_border),
               Icon(Icons.favorite_border),
               Icon(Icons.favorite_border),
@@ -52,6 +69,7 @@ class FullScreen extends StatelessWidget {
                   {
                     m.cur_ind.value--;
                     m.isPlay.value=true;
+                    m.check_fav();
                     await MyConfig.player.play(DeviceFileSource(m.song_list.value[m.cur_ind.value].data));
                   }
               }, icon: Icon(Icons.skip_previous_outlined)),
@@ -67,6 +85,7 @@ class FullScreen extends StatelessWidget {
                   {
                     m.cur_ind.value++;
                     m.isPlay.value=true;
+                    m.check_fav();
                     await MyConfig.player.play(DeviceFileSource(m.song_list.value[m.cur_ind.value].data));
                   }
               }, icon: Icon(Icons.skip_next))

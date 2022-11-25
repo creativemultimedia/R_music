@@ -42,6 +42,7 @@ dependencies:
   audioplayers:
   flutter_media_metadata:
   palette_generator:
+  on_audio_room:
 
 dev_dependencies:
   flutter_test:
