@@ -14,6 +14,7 @@ class MyConfig extends GetxController
   static AudioPlayer player=AudioPlayer();
   RxInt cur_ind=0.obs;
   RxList<SongModel> song_list = RxList();
+  RxList<Widget> img_list = RxList();
   RxBool isPlay=false.obs;
   RxDouble cur_duration=0.0.obs;
    get_songs() async {
@@ -32,9 +33,7 @@ class MyConfig extends GetxController
   get_song_pos()
   {
     player.onPositionChanged.listen((Duration  p) {
-    cur_duration.value=p.inMilliseconds.toDouble();
-
-  });
+    cur_duration.value=p.inMilliseconds.toDouble();});
   }
   String printDuration(Duration duration) {
     String twoDigits(int n) {

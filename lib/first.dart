@@ -99,7 +99,7 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
             child: Obx(() => Slider(
               value: m.cur_duration.value,
               min: 0,
-              max: m.song_list[m.cur_ind.value].duration!.toDouble(),
+              max: m.song_list.value.length>0?m.song_list[m.cur_ind.value].duration!.toDouble():0,
               onChanged: (double value) {},
             )),
           ),
