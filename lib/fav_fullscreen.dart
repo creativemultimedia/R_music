@@ -39,21 +39,25 @@ class fav_fullscreen extends StatelessWidget {
                       return ListTile(
                         onTap: () async {
                           m.isPlay.value=true;
-                          if(index==m.cur_ind.value){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return FullScreen();
-                            },));
-                          }else {
-                            for(int i=0;i<m.song_list.value.length;i++)
-                              {
-                                if(m.song_list.value[i].id==list[index].id)
-                                  {
-                                    m.cur_ind.value=i;
-                                    await MyConfig.player.play(DeviceFileSource(m.song_list.value[m.cur_ind.value].data));
-                                  }
+                          for(int i=0;i<m.song_list.value.length;i++)
+                          {
+                            if(m.song_list.value[i].id==list[index].id)
+                            {
+                              if(i==m.cur_ind.value){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return FullScreen();
+                                },));
+                              }else {
+
+                                print("yes");
+                                m.cur_ind.value=i;
+                                await MyConfig.player.play(DeviceFileSource(m.song_list.value[m.cur_ind.value].data));
+
                               }
+                            }
                           }
-                          m.get_song_pos();
+
+                           m.get_song_pos();
                         },
                         key: ValueKey(index),
                         leading: Icon(Icons.ac_unit_outlined),
