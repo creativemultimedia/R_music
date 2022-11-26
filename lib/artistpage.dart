@@ -1,88 +1,67 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rmusic/config.dart';
 import 'package:rmusic/fullscreen.dart';
-import 'package:rmusic/playlist_file.dart';
-import 'package:rmusic/songs_file.dart';
-import 'package:on_audio_query/on_audio_query.dart';
-import 'package:rmusic/playlist_file.dart';
-import 'package:rmusic/songs_file.dart';
-import 'Artist_class.dart';
-import 'folder_file.dart';
 
-class First extends StatefulWidget {
-  const First({Key? key}) : super(key: key);
-
-  @override
-  State<First> createState() => _FirstState();
-}
-
-class _FirstState extends State<First> with TickerProviderStateMixin {
-  TabController? tabController;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    tabController = TabController(length: 3, vsync: this);
-  }
-
+class artistpage extends StatelessWidget {
+  ArtistModel artistModel;
+  artistpage(this.artistModel);
   @override
   Widget build(BuildContext context) {
     MyConfig m=Get.put(MyConfig());
     return Scaffold(
-      drawer: Drawer(),
       appBar: AppBar(
         backgroundColor: Color(0xff5e2563),
-        elevation: 0.0,
-        title: Text("Music Player"),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: Icon(
-                Icons.search_rounded,
-              ))
-        ],
-        titleSpacing: 10,
-        bottom: TabBar(
-            indicatorColor: Colors.orange,
-            labelColor: Colors.orange,
-            unselectedLabelColor: Colors.white,
-            isScrollable: true,
-            controller: tabController,
-            tabs: [
-              Tab(
-                child: Text("SONGS"),
-              ),
-              Tab(
-                child: Text("PLAYLIST"),
-              ),
-              Tab(
-                child: Text("ARISTS"),
-              ),
-              // Tab(child: Text("ALBUMS"),),
-              //  Tab(child: Text("ARTISTS"),),
-              //  Tab(child: Text("GENRES"),),
-            ]),
-      ),
-      // extendBodyBehindAppBar: true,
-      body: Stack(
-        alignment: Alignment.topLeft,
+        elevation: 0.0,),
+      body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [Color(0xff5e2563), Color(0xff65799b)])),
-
-          ),
-          TabBarView(
-              controller: tabController,
-              children: [Songs_class(), Playlist_class(), ArtistClass()])
+          Text("${artistModel.artist}"),
+          Expanded(child: FutureBuilder(builder: (context, snapshot) {
+            List<SongModel> list=snapshot.data as List<SongModel>;
+            return ListView.builder(
+              itemBuilder: (context, index)  {
+                SongModel songModel=list[index];
+                print(songModel);
+                return ListTile(
+                  onTap: () async {
+                    m.isPlay.value=true;
+                    for(int i=0;i<m.song_list.value.length;i++)
+                    {
+                      if(m.song_list.value[i].id==list[index].id)
+                      {
+                        if(i==m.cur_ind.value){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return FullScreen();
+                          },));
+                        }else
+                        {
+                          print("yes");
+                          m.cur_ind.value=i;
+                          await MyConfig.player.play(DeviceFileSource(m.song_list.value[m.cur_ind.value].data));
+                        }
+                      }
+                    }
+                    m.get_song_pos();
+                  },
+                  trailing:  Obx(() => m.isPlay==true && m.song_list.value[m.cur_ind.value].id==list[index].id?Image.network("https://i.pinimg.com/originals/cb/17/b8/cb17b80a942d7c317a35ff1324fae12f.gif",height: 50,width: 50,fit: BoxFit.fitHeight):
+                  Text("")),
+                  leading:FutureBuilder(future: m.get_image(index),builder: (context, snapshot) {
+                    if(snapshot.hasData)
+                    {
+                      return snapshot.data!;
+                    }
+                    else
+                    {
+                      return Icon(Icons.music_note);
+                    }
+                  },),
+                  title: Text("${songModel.title}"),
+                  subtitle: Text("${songModel.artist}"),
+                );
+              },itemCount: list.length,);
+          },future: m.getallsongbyartist(artistModel.id),))
         ],
       ),
       bottomNavigationBar: Column(
@@ -136,11 +115,5 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
         ],
       ),
     );
-  }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    MyConfig.player.stop().then((value) {});
   }
 }

@@ -47,16 +47,14 @@ class fav_fullscreen extends StatelessWidget {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                                   return FullScreen();
                                 },));
-                              }else {
-
+                              }else
+                              {
                                 print("yes");
                                 m.cur_ind.value=i;
                                 await MyConfig.player.play(DeviceFileSource(m.song_list.value[m.cur_ind.value].data));
-
                               }
                             }
                           }
-
                            m.get_song_pos();
                         },
                         key: ValueKey(index),

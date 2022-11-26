@@ -14,8 +14,11 @@ class MyConfig extends GetxController
   static OnAudioQuery _audioQuery = OnAudioQuery();
   static AudioPlayer player=AudioPlayer();
   RxInt cur_ind=0.obs;
+  RxInt artistindex=0.obs;
   RxBool fav=false.obs;
   RxList<SongModel> song_list = RxList();
+  RxList<SongModel> songsbyartist = RxList();
+  RxList<ArtistModel> artistsongs=RxList();
   RxList<Widget> img_list = RxList();
   RxList<FavoritesEntity> fav_list = RxList();
   RxBool isPlay=false.obs;
@@ -65,7 +68,14 @@ class MyConfig extends GetxController
     else
       return "$twoDigitMinutes:$twoDigitSeconds";
   }
-
+  getartistsongs() async {
+    artistsongs.value = await _audioQuery.queryArtists();
+    return artistsongs;
+  }
+  getallsongbyartist(int artistid) async {
+    songsbyartist.value = await _audioQuery.queryAudiosFrom(AudiosFromType.ARTIST_ID,artistid);
+    return songsbyartist.value;
+  }
 
 
 }
