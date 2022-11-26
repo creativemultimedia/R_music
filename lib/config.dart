@@ -18,6 +18,7 @@ class MyConfig extends GetxController
   RxBool fav=false.obs;
   RxList<SongModel> song_list = RxList();
   RxList<SongModel> songsbyartist = RxList();
+  RxList<SongModel> songsbyalbum = RxList();
   RxList<ArtistModel> artistsongs=RxList();
   RxList<AlbumModel> albums=RxList();
   RxList<Widget> img_list = RxList();
@@ -81,6 +82,10 @@ class MyConfig extends GetxController
   getallsongbyartist(int artistid) async {
     songsbyartist.value = await _audioQuery.queryAudiosFrom(AudiosFromType.ARTIST_ID,artistid);
     return songsbyartist.value;
+  }
+  getallsongbyalbum(int albumid) async {
+    songsbyalbum.value = await _audioQuery.queryAudiosFrom(AudiosFromType.ALBUM_ID,albumid);
+    return songsbyalbum.value;
   }
 
 

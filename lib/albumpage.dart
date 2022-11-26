@@ -22,7 +22,7 @@ class albumpage extends StatelessWidget {
                 // },));
               },
               title: Text("${albumModel.album}"),
-              subtitle: Text("${albumModel.artist}"),
+              subtitle: Text("${albumModel.artist} | ${albumModel.numOfSongs}"),
             );
           }, separatorBuilder: (context, index) {
             return Divider();
