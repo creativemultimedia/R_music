@@ -2,12 +2,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:rmusic/artistpage.dart';
 import 'package:rmusic/config.dart';
 import 'package:rmusic/fullscreen.dart';
 
 class artistpage extends StatelessWidget {
   ArtistModel artistModel;
   artistpage(this.artistModel);
+
   @override
   Widget build(BuildContext context) {
     MyConfig m=Get.put(MyConfig());
@@ -18,6 +20,7 @@ class artistpage extends StatelessWidget {
       body: Column(
         children: [
           Text("${artistModel.artist}"),
+          Text("${artistModel.numberOfAlbums}"),
           Expanded(child: FutureBuilder(builder: (context, snapshot) {
             List<SongModel> list=snapshot.data as List<SongModel>;
             return ListView.builder(
@@ -58,7 +61,7 @@ class artistpage extends StatelessWidget {
                     }
                   },),
                   title: Text("${songModel.title}"),
-                  subtitle: Text("${songModel.artist}"),
+                  subtitle: Text("${songModel.album}"),
                 );
               },itemCount: list.length,);
           },future: m.getallsongbyartist(artistModel.id),))
