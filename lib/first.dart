@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:rmusic/albumpage.dart';
+import 'package:rmusic/Album_class.dart';
 import 'package:rmusic/config.dart';
 import 'package:rmusic/fullscreen.dart';
 import 'package:rmusic/playlist_file.dart';
@@ -86,7 +86,7 @@ class _FirstState extends State<First> with TickerProviderStateMixin {
           ),
           TabBarView(
               controller: tabController,
-              children: [Songs_class(), Playlist_class(), ArtistClass(),albumpage()])
+              children: [Songs_class(), Playlist_class(), ArtistClass(),albumclass()])
         ],
       ),
       bottomNavigationBar: Column(
